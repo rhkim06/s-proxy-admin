@@ -1,27 +1,69 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import axios, { AxiosInstance, AxiosResponse } from 'axios'
+import type { AppRequestConfig } from '../types'
 
 class AppRequest {
   instance: AxiosInstance
-  constructor(baseURL: any, timeout: number) {
-    this.instance = axios.create({
-      baseURL,
-      timeout
-    })
-    this.instance.interceptors.request.use((config) => {
-      return config
-    })
-    this.instance.interceptors.response.use((res) => {
-      return res
+  constructor(config: AppRequestConfig) {
+    this.instance = axios.create(config)
+    this.instance.interceptors.request.use(
+      (config: AppRequestConfig) => {
+        console.log('global request success interceptor')
+        return config
+      },
+      (err: any) => {
+        console.log('global request failure interceptor')
+        return err
+      }
+    )
+    this.instance.interceptors.response.use(
+      (res: AxiosResponse) => {
+        console.log('global response success interceptor')
+        return res
+      },
+      (err: any) => {
+        console.log('global response failure interceptor')
+        return err
+      }
+    )
+    this.instance.interceptors.request.use(
+      config.interceptors?.onRequestFulfilled,
+      config.interceptors?.onRequestRejected
+    )
+    this.instance.interceptors.response.use(
+      config.interceptors?.onResponseFulfilled,
+      config.interceptors?.onResponseRejected
+    )
+  }
+  request<T = any>(config: any) {
+    if (config.interceptors?.onRequestFulfilled) {
+      config = config.interceptors.onRequestFulfilled(config)
+    }
+    if (config.interceptors?.onRequestRejected) {
+      config = config.interceptors.onRequestRejected(config)
+    }
+    return new Promise((resolve, reject) => {
+      this.instance
+        .request<any, T>(config)
+        .then((res) => {
+          if (config.interceptors?.onResponseFulfilled) {
+            res = config.interceptors.onResponseFulfilled(res)
+          }
+          resolve(res)
+        })
+        .catch((err) => {
+          if (config.interceptors?.onRequestRejected) {
+            err = config.interceptors.onRequestRejected(err)
+          }
+          reject(err)
+        })
     })
   }
-  request<T>(config: AxiosRequestConfig<T>) {
-    return this.instance.request<T>({ ...config, withCredentials: true })
+  post<T = any>(config: AppRequestConfig<T>) {
+    return this.request<T>({ ...config, method: 'POST' })
   }
-  get<T>(url: string, config?: AxiosRequestConfig<T>) {
-    return this.request<T>({ ...config, withCredentials: true, url, method: 'get' })
-  }
-  post<T>(config: AxiosRequestConfig<T>) {
-    return this.instance.request<T>({ ...config, method: 'post' })
+  get<T = any>(config: AppRequestConfig<T>) {
+    return this.request<T>({ ...config, method: 'GET' })
   }
 }
+
 export default AppRequest

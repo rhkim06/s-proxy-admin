@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import testSlice from './module/test'
+import userSlice from './module/user'
 const store = configureStore({
   reducer: {
-    [testSlice.name]: testSlice.reducer
+    [testSlice.name]: testSlice.reducer,
+    [userSlice.name]: userSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
