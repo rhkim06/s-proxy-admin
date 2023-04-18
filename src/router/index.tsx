@@ -10,7 +10,7 @@ import StaticIp from '@/views/dashboard/cpn-view/static-ip'
 export const routes: RouteObject[] = [
   {
     path: '/',
-    element: <Navigate to="/dashboard" />
+    element: <Navigate to="/login" />
   },
   {
     path: '/dashboard',
