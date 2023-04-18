@@ -17,6 +17,12 @@ class AppRequest {
     )
     this.instance.interceptors.response.use(
       (res: AxiosResponse) => {
+        console.log(res)
+
+        if (res.headers.getAuthorization) {
+          const token = res.headers.getAuthorization
+          window.localStorage.setItem('token', token.toString())
+        }
         console.log('global response success interceptor')
         return res
       },

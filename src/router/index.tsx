@@ -4,6 +4,8 @@ import Dashboard from '@/views/dashboard'
 import Login from '@/views/login'
 import Test from '@/views/test'
 import ProtectedRoute from './protected-route'
+import DynamicIp from '@/views/dashboard/cpn-view/dynamic-ip'
+import StaticIp from '@/views/dashboard/cpn-view/static-ip'
 
 export const routes: RouteObject[] = [
   {
@@ -16,7 +18,21 @@ export const routes: RouteObject[] = [
       <ProtectedRoute>
         <Dashboard />
       </ProtectedRoute>
-    )
+    ),
+    children: [
+      {
+        path: '',
+        element: <Navigate to="dynamic-ip" />
+      },
+      {
+        path: 'dynamic-ip',
+        element: <DynamicIp />
+      },
+      {
+        path: 'static-ip',
+        element: <StaticIp />
+      }
+    ]
   },
   {
     path: '/login',

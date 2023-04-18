@@ -1,10 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
+import authSlice from './module/auth'
+import dynamicIpSlice from './module/dynamicIp'
+import staticIpSlice from './module/staticIp'
 import testSlice from './module/test'
 import userSlice from './module/user'
 const store = configureStore({
   reducer: {
     [testSlice.name]: testSlice.reducer,
-    [userSlice.name]: userSlice.reducer
+    [userSlice.name]: userSlice.reducer,
+    [staticIpSlice.name]: staticIpSlice.reducer,
+    [authSlice.name]: authSlice.reducer,
+    [dynamicIpSlice.name]: dynamicIpSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

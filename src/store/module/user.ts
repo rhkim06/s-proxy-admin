@@ -2,13 +2,11 @@ import { User } from '@/types/user'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type InitialState = {
-  profile: User
+  user: User
 }
 const initialState: InitialState = {
-  profile: {
-    name: '',
-    proxyId: '',
-    proxyPwd: ''
+  user: {
+    id: 0
   }
 }
 const userSlice = createSlice({
@@ -16,7 +14,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     updateUser(state, action: PayloadAction<User>) {
-      state.profile = action.payload
+      state.user = action.payload
     }
   }
 })

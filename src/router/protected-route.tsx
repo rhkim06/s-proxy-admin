@@ -2,9 +2,10 @@ import React, { FunctionComponentElement, memo, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import { checkAuth } from '@/hooks/useAuth'
 import { Navigate } from 'react-router-dom'
-import { getProfile } from '@/service/dashboard'
 import { useAppDispatch } from '@/hooks/store'
 import { updateUser } from '@/store/module/user'
+import { updateToken } from '@/store/module/auth'
+import { getAuth } from '@/service/auth'
 
 interface IProps {
   children?: ReactNode
@@ -13,12 +14,9 @@ interface IProps {
 const ProtectedRoute: FC<IProps> = memo(({ children }) => {
   const [result, setResult] = useState<ReactNode>(null)
   const dispatch = useAppDispatch()
-  checkAuth().then(async (res) => {
-    console.log(res, 'res')
-
-    if (res) {
-      const result = await getProfile(res.data.data.name)
-      dispatch(updateUser(result.data))
+  getAuth().then(async (res) => {
+    if (res.data.message === 'token verified') {
+      dispatch(updateUser(res.data.data.user))
       setResult(children)
     } else {
       setResult(<Navigate to="/login" />)

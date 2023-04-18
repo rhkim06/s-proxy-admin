@@ -1,10 +1,12 @@
 export type User = {
-  name: string
-  proxyId: string
-  proxyPwd: string
+  id: number
 }
 
 export type TokenVerified = {
   data: any
   message: string
+}
+
+export type Token = {
+  token: string
 }

@@ -7,25 +7,29 @@ import { getAuth, login } from '@/service/auth'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/hooks/store'
 import { updateUser } from '@/store/module/user'
-import { getProfile } from '@/service/dashboard'
 import { checkAuth } from '@/hooks/useAuth'
+import { updateToken } from '@/store/module/auth'
+import { Alert, Button, Input } from 'antd'
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
 
 interface IProps {
   children?: ReactNode
 }
 
 const Login: FC<IProps> = memo(() => {
+  // state
   const [isAuth, setIsAuth] = useState(false)
+  const [wrongId, setWrongId] = useState(false)
+  const [password, setPassword] = useState('')
+  const [id, setId] = useState('')
+  // effect
   useEffect(() => {
-    checkAuth().then((res) => {
+    getAuth().then((res) => {
       if (res) {
         setIsAuth(true)
       }
     })
-  })
-  if (localStorage.getItem('access_token')) {
-  }
-
+  }, [])
   // store
   const dispatch = useAppDispatch()
   // navigate
@@ -33,37 +37,59 @@ const Login: FC<IProps> = memo(() => {
   // Refs
   const idRef = useRef<HTMLInputElement>(null)
   const pwRef = useRef<HTMLInputElement>(null)
+
+  // handlers
+  const pwdChangeHandler = (e: any) => {
+    setPassword(e.target.value)
+  }
+  const idChangeHandler = (e: any) => {
+    setId(e.target.value)
+  }
   const signInHandler = async () => {
-    const name = idRef.current!.value
-    const password = pwRef.current!.value
     try {
-      const { data } = await login({ name, password })
+      const { data } = await login({ id, password })
       if (data && data.codeStatus === 200) {
-        window.localStorage.setItem('access_token', data.token!)
+        dispatch(updateUser(data.data))
         navigate('/dashboard')
-        const res = await getProfile(name)
-        dispatch(updateUser(res.data))
+      } else {
+        setWrongId(true)
       }
-    } catch (error) {}
+    } catch (error) {
+      setWrongId(true)
+    }
   }
   if (isAuth) {
     return <Navigate to="/dashboard" />
   } else {
     return (
-      <div className="container mx-auto flex justify-center">
-        <div className="mt-20 flex w-1/4 flex-col items-center justify-center px-4">
-          <div className="flex items-center justify-center">
-            <span className="w-8 text-blue-400">ID: </span>
-            <input ref={idRef} type="text" className={`${inputBasic} ml-2`} />
-          </div>
-          <div className="mt-2 flex items-center justify-center">
-            <span className="w-8 text-blue-400">PW: </span>
-            <input ref={pwRef} type="text" className={`ml-2 ${inputBasic}`} />
-          </div>
-          <div onClick={signInHandler}>
-            <button onClick={signInHandler} className={`${buttonBasic} mt-2 block`}>
-              Sign In
-            </button>
+      <div>
+        <h1 className="mt-24 text-center font-mono text-2xl font-bold text-indigo-500/60">JX-科技</h1>
+        <div className="container mx-auto flex justify-center">
+          <div className="mt-10 max-w-md px-4">
+            <div className="flex w-full items-center">
+              <span className="w-16 text-stone-900">账号: </span>
+              <Input size="large" placeholder="请输入账号" value={id} onChange={(e) => idChangeHandler(e)} />
+            </div>
+            <div className="mt-2 flex items-center ">
+              <span className="w-16 text-stone-900">密码: </span>
+              <Input.Password
+                size="large"
+                value={password}
+                placeholder="请输入密码"
+                iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                onChange={(e) => pwdChangeHandler(e)}
+              />
+            </div>
+            <div className="mt-8">
+              <Button type="primary" size="large" block onClick={signInHandler}>
+                登陆
+              </Button>
+            </div>
+            {wrongId && (
+              <div className="mt-8">
+                <Alert message="警告" description="账号或密码错误，请重新输入！" type="error" showIcon />
+              </div>
+            )}
           </div>
         </div>
       </div>
