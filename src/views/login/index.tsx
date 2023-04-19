@@ -35,9 +35,6 @@ const Login: FC<IProps> = memo(() => {
   const dispatch = useAppDispatch()
   // navigate
   const navigate = useNavigate()
-  // Refs
-  const idRef = useRef<HTMLInputElement>(null)
-  const pwRef = useRef<HTMLInputElement>(null)
 
   // handlers
   const pwdChangeHandler = (e: any) => {
@@ -47,6 +44,8 @@ const Login: FC<IProps> = memo(() => {
     setId(e.target.value)
   }
   const signInHandler = async () => {
+    console.log(id, password)
+
     try {
       const { data } = await login({ id, password })
       if (data && data.codeStatus === 200) {
