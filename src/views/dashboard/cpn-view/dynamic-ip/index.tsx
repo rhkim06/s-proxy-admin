@@ -10,7 +10,7 @@ import Sidebar from '@/components/sidebar/indes'
 import { fetchDynamicIpInfo, updateDynamicIp } from '@/store/module/dynamicIp'
 import { stat } from 'fs'
 import { shallowEqual } from 'react-redux'
-import { message, Popconfirm } from 'antd'
+import { message, Popconfirm, Select } from 'antd'
 
 interface IProps {
   children?: ReactNode
@@ -43,11 +43,11 @@ const DynamicIp: FC<IProps> = memo(() => {
       })
     }
   }
-  const selectCountryChangeHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-    setCountry(e.target.value as Country)
+  const selectCountryChangeHandler = (value: Country) => {
+    setCountry(value)
   }
   return (
-    <div className="flex flex-col items-center justify-center ">
+    <div className="flex justify-center">
       <div className="show-data-box">
         <div className="border border-slate-800/50">
           <table className="w-full">
@@ -73,17 +73,24 @@ const DynamicIp: FC<IProps> = memo(() => {
             </tbody>
           </table>
         </div>
+        <div className="mt-8 flex">
+          <Select
+            defaultValue="us"
+            className="flex-1"
+            onChange={selectCountryChangeHandler}
+            options={[
+              { value: 'us', label: '美国' },
+              { value: 'kr', label: '韩国' },
+              { value: 'jp', label: '日本' },
+              { value: 'in', label: '印度' }
+            ]}
+          />
+          <Popconfirm title="确认切换IP?" onConfirm={() => handleChangeCountryBtn()} okText="确认" cancelText="取消">
+            <button className="basic-button">切换IP</button>
+          </Popconfirm>
+        </div>
       </div>
-      <div className="mt-8 flex">
-        <select className="basic-select" onChange={(e) => selectCountryChangeHandler(e)}>
-          <option value="ko">韩国</option>
-          <option value="en">美国</option>
-          <option value="jp">日本</option>
-        </select>
-        <Popconfirm title="确认切换IP?" onConfirm={() => handleChangeCountryBtn()} okText="确认" cancelText="取消">
-          <button className="basic-button">切换IP</button>
-        </Popconfirm>
-      </div>
+
       {contextHolder}
     </div>
   )
