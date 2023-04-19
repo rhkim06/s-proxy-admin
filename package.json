@@ -2,6 +2,7 @@
   "name": "neteasemusic",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http:jxit360.com",
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@reduxjs/toolkit": "^1.9.3",
