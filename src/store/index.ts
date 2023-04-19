@@ -16,7 +16,8 @@ const store = configureStore({
     getDefaultMiddleware({
       immutableCheck: { warnAfter: 128 },
       serializableCheck: { warnAfter: 128 }
-    })
+    }),
+  devTools: process.env.NODE_ENV !== 'production'
 })
 
 export default store

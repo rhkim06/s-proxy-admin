@@ -36,8 +36,8 @@ input {
   @apply w-52 flex-1 cursor-pointer rounded-md border border-stone-500 p-2 outline-none;
 }
 .basic-th {
-  @apply bg-indigo-500/50 p-2 text-left text-lg font-bold text-gray-900;
+  @apply bg-indigo-500/50 p-2 text-left text-base font-bold text-gray-900;
 }
 .basic-td {
-  @apply p-2 text-lg text-gray-900;
+  @apply p-2 text-sm text-gray-900;
 }

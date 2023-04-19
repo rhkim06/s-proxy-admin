@@ -31,7 +31,7 @@ const DynamicIp: FC<IProps> = memo(() => {
   // button handlers
   const handleChangeCountryBtn = async () => {
     try {
-      const res = await changeIp(country)
+      const res = await changeIp(country, proxyId)
       messageApi.open({
         type: 'success',
         content: 'IP切换成功！'

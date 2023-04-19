@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/store'
 import { fetchStaticIpList, updateStaticIpList } from '@/store/module/staticIp'
 import { staticListCategory } from './data'
 import { shallowEqual } from 'react-redux'
-import { message, Pagination, Popconfirm, Table } from 'antd'
+import { message, Pagination, Popconfirm, Select, Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import { DataType } from './table-data'
 
@@ -47,8 +47,8 @@ const StaticIp: FC<IProps> = memo(() => {
   // antd
   const [messageApi, contextHolder] = message.useMessage()
   // handers
-  const selectStaticOptionHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-    setStaticOption(e.target.value)
+  const selectStaticOptionHandler = (value: string) => {
+    setStaticOption(value)
   }
   const buyStaticHandler = async () => {
     const config = {
@@ -71,11 +71,11 @@ const StaticIp: FC<IProps> = memo(() => {
       })
     }
   }
-  const selectCountryOptionHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-    setCountryOption(e.target.value as Country)
+  const selectCountryOptionHandler = (value: Country) => {
+    setCountryOption(value)
   }
-  const selectProtocolHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-    setStaticProtocol(e.target.value)
+  const selectProtocolHandler = (value: string) => {
+    setStaticProtocol(value)
   }
 
   const removeStaticIp = async (id: string) => {
@@ -156,7 +156,7 @@ const StaticIp: FC<IProps> = memo(() => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="show-data-box flex justify-between">
+      <div className="show-data-box flex flex-col items-center">
         <div className="border border-slate-800/50">
           <table className="w-full">
             <colgroup>
@@ -167,30 +167,45 @@ const StaticIp: FC<IProps> = memo(() => {
               <tr className="border-b border-slate-800/50">
                 <th className="basic-th">国家/地区</th>
                 <td className="basic-td flex">
-                  <select className="basic-select flex-1" onChange={(e) => selectCountryOptionHandler(e)}>
-                    <option value="us">美国</option>
-                    <option value="kr">韩国</option>
-                    <option value="jp">日本</option>
-                    <option value="in">印度</option>
-                  </select>
+                  <Select
+                    defaultValue="us"
+                    className="w-full"
+                    onChange={selectCountryOptionHandler}
+                    options={[
+                      { value: 'us', label: '美国' },
+                      { value: 'kr', label: '韩国' },
+                      { value: 'jp', label: '日本' },
+                      { value: 'in', label: '印度' }
+                    ]}
+                  />
                 </td>
               </tr>
               <tr className="border-b border-slate-800/50">
                 <th className="basic-th">协议</th>
                 <td className="basic-td flex">
-                  <select className="basic-select flex-1" onChange={(e) => selectProtocolHandler(e)}>
-                    <option value="socks5">SOCKS5</option>
-                    <option value="http">HTTP/HTTPS</option>
-                  </select>
+                  <Select
+                    defaultValue="socks5"
+                    className="w-full"
+                    onChange={selectProtocolHandler}
+                    options={[
+                      { value: 'socks5', label: 'SOCKS5' },
+                      { value: 'http', label: 'HTTP/HTTPS' }
+                    ]}
+                  />
                 </td>
               </tr>
               <tr className="border-b border-slate-800/50">
                 <th className="basic-th">IP 类型</th>
                 <td className="basic-td flex">
-                  <select className="basic-select flex-1" onChange={(e) => selectStaticOptionHandler(e)}>
-                    <option value="0">共享</option>
-                    <option value="1">独享</option>
-                  </select>
+                  <Select
+                    defaultValue="0"
+                    className="w-full"
+                    onChange={selectStaticOptionHandler}
+                    options={[
+                      { value: '0', label: '共享' },
+                      { value: '1', label: '独享' }
+                    ]}
+                  />
                 </td>
               </tr>
               <tr className="border-b border-slate-800/50">
@@ -204,82 +219,17 @@ const StaticIp: FC<IProps> = memo(() => {
             </tbody>
           </table>
         </div>
+        <div className="mt-4">
+          <Popconfirm title="确认购买?" onConfirm={() => buyStaticHandler()} okText="确认" cancelText="取消">
+            <button className="basic-button">立即购买</button>
+          </Popconfirm>
+        </div>
       </div>
-      <div className="mt-4">
-        <Popconfirm title="确认购买?" onConfirm={() => buyStaticHandler()} okText="确认" cancelText="取消">
-          <button className="basic-button">立即购买</button>
-        </Popconfirm>
-      </div>
-      <h2 className="mt-5 text-2xl">静态住宅IP订单列表</h2>
-      <div className="show-data-box mt-4">
+
+      <h2 className="mb-0 mt-20 rounded-t bg-white px-6 py-3 text-lg">静态住宅IP订单列表</h2>
+      <div className="show-data-box">
         <Table columns={columns} dataSource={rows} bordered />
       </div>
-      {/* <div className="show-data-box mt-4">
-        <table className="border border-slate-800/50">
-          <colgroup>
-            <col width="50px" />
-            <col width="220px" />
-            <col width="50px" />
-            <col width="60px" />
-            <col width="170px" />
-            <col width="170px" />
-            <col width="70px" />
-            <col width="60px" />
-            <col width="60px" />
-            <col width="100px" />
-            <col width="60px" />
-          </colgroup>
-          <thead>
-            <tr className="border-b border-slate-800/50">
-              <th className="basic-th border-l border-slate-800/50 !text-center">No.</th>
-              <th className="basic-th border-l border-slate-800/50 !text-center">
-                创建时间 <br /> 上次续费时间
-              </th>
-              {staticListCategory.map((item) => {
-                return (
-                  <th className="basic-th border-l border-slate-800/50 !text-center" key={item}>
-                    {item}
-                  </th>
-                )
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {rows &&
-              rows.map((item, index) => {
-                return (
-                  <tr className="border-b border-slate-800/50 text-center" key={item.sip_id}>
-                    <td>{index + 1}</td>
-                    <td className="border-l border-slate-800/50 p-2">
-                      {item.sip_create_time}
-                      <br />
-                      {item.sip_last_check_rebuy_time}
-                    </td>
-                    <td className="border-l border-slate-800/50 p-2">{item.sip_protocol}</td>
-                    <td className="border-l border-slate-800/50 p-2">{item.sip_country}</td>
-                    <td className="border-l border-slate-800/50 p-2">proxy.jxit360.net:{item.sip_ip.split(':')[1]}</td>
-                    <td className="border-l border-slate-800/50 p-2">{item.sip_user_name}</td>
-                    <td className="border-l border-slate-800/50 p-2">{item.sip_password}</td>
-                    <td className="border-l border-slate-800/50 p-2">{item.sip_private === 0 ? '共享' : '独享'}</td>
-                    <td className="border-l border-slate-800/50 p-2">{item.sip_status === 1 ? '正常' : '欠费'}</td>
-                    <td className="border-l border-slate-800/50 p-2">{item.sip_refresh_times}</td>
-                    <td className="border-l border-slate-800/50 p-2">
-                      <span
-                        className="cursor-pointer hover:text-indigo-500/60 hover:underline"
-                        onClick={(e) => removeStaticIp(item.id)}
-                      >
-                        移除
-                      </span>
-                    </td>
-                  </tr>
-                )
-              })}
-          </tbody>
-        </table>
-      </div>
-      <div className="mt-8">
-        <Pagination defaultCurrent={1} total={total} onChange={clickPageHandler} />
-      </div> */}
       {contextHolder}
     </div>
   )
