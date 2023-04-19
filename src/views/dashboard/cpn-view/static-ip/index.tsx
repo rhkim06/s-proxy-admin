@@ -117,7 +117,7 @@ const StaticIp: FC<IProps> = memo(() => {
     {
       title: '服务器:端口',
       dataIndex: 'sip_ip',
-      render: (text) => `proxy.jxit360.net:${text.split(':')[1]}`
+      render: (text) => `proxy.jxit360.com:${text.split(':')[1]}`
     },
     {
       title: '账号',

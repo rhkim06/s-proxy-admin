@@ -11,6 +11,7 @@ import { checkAuth } from '@/hooks/useAuth'
 import { updateToken } from '@/store/module/auth'
 import { Alert, Button, Input } from 'antd'
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
+import Logo from '@assets/image/logo.png'
 
 interface IProps {
   children?: ReactNode
@@ -63,7 +64,9 @@ const Login: FC<IProps> = memo(() => {
   } else {
     return (
       <div>
-        <h1 className="mt-24 text-center font-mono text-2xl font-bold text-indigo-500/60">JX-科技</h1>
+        <h1 className="mt-24 flex justify-center">
+          <img className="w-20" src={Logo} alt="logo" />
+        </h1>
         <div className="container mx-auto flex justify-center">
           <div className="mt-10 max-w-md px-4">
             <div className="flex w-full items-center">

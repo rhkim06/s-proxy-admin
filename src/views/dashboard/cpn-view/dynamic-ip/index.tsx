@@ -60,7 +60,7 @@ const DynamicIp: FC<IProps> = memo(() => {
             <tbody>
               <tr className="border-b border-slate-800/50">
                 <th className="basic-th">代理服务器</th>
-                <td className="basic-td">proxy.jxit360.net</td>
+                <td className="basic-td">proxy.jxit360.com</td>
                 <th className="basic-th border-l border-slate-800/50">端口</th>
                 <td className="basic-td">2029</td>
               </tr>
