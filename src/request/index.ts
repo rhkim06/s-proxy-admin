@@ -21,13 +21,18 @@ request9002.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   }
   return config
 })
-request9002.interceptors.response.use((res) => {
-  const token = res.headers.authorization
-  if (token) {
-    localStorage.setItem('access_token', token)
+request9002.interceptors.response.use(
+  (res) => {
+    const token = res.headers.authorization
+    if (token) {
+      localStorage.setItem('access_token', token)
+    }
+    return res
+  },
+  (err) => {
+    console.log(err)
   }
-  return res
-})
+)
 // const request8000 = new AppRequest({
 //   baseURL: BASE_URL1,
 //   timeout: TIMEOUT,

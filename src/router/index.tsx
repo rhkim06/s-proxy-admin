@@ -6,6 +6,8 @@ import Test from '@/views/test'
 import ProtectedRoute from './protected-route'
 import DynamicIp from '@/views/dashboard/cpn-view/dynamic-ip'
 import StaticIp from '@/views/dashboard/cpn-view/static-ip'
+import SmsA from '@/views/dashboard/cpn-view/sms-a'
+import BadRequest from '@/views/404'
 
 export const routes: RouteObject[] = [
   {
@@ -31,6 +33,10 @@ export const routes: RouteObject[] = [
       {
         path: 'static-ip',
         element: <StaticIp />
+      },
+      {
+        path: 'sms-a',
+        element: <SmsA />
       }
     ]
   },
@@ -41,5 +47,9 @@ export const routes: RouteObject[] = [
   {
     path: '/test',
     element: <Test />
+  },
+  {
+    path: '*',
+    element: <BadRequest />
   }
 ]

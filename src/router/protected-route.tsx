@@ -14,14 +14,16 @@ interface IProps {
 const ProtectedRoute: FC<IProps> = memo(({ children }) => {
   const [result, setResult] = useState<ReactNode>(null)
   const dispatch = useAppDispatch()
-  getAuth().then(async (res) => {
-    if (res.data.message === 'token verified') {
-      dispatch(updateUser(res.data.data.user))
-      setResult(children)
-    } else {
+  getAuth()
+    .then(async (res) => {
+      if (res.data.message === 'token verified') {
+        dispatch(updateUser(res.data.data.user))
+        setResult(children)
+      }
+    })
+    .catch((err) => {
       setResult(<Navigate to="/login" />)
-    }
-  })
+    })
   return <>{result}</>
 })
 

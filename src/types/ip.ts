@@ -1,4 +1,4 @@
-export type Country = 'ko' | 'us' | 'jp'
+export type Country = 'ko' | 'us' | 'jp' | 'in'
 
 export type ChangeIp = {
   Data: string

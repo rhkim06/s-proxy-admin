@@ -87,7 +87,6 @@ const StaticIp: FC<IProps> = memo(() => {
         content: '移除成功！'
       })
     } catch (error) {
-      console.log(error)
       messageApi.open({
         type: 'success',
         content: '移除失败！'
