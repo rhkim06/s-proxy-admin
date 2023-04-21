@@ -32,3 +32,7 @@ export const createSmsA = async (payload: any) => {
     code
   })
 }
+
+export const getVefiryHistory = async (userId: number) => {
+  return await appReqest.get<any>(`sms-a/${userId}`)
+}

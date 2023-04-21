@@ -11,6 +11,7 @@ import iconfacebook from '@assets/image/icon-facebook.avif'
 import iconinstagram from '@assets/image/icon-instagram.avif'
 import Paragraph from 'antd/es/typography/Paragraph'
 import { createSmsA } from '@/service/sms-a'
+import VerifyHistory from './cpn/verify-history'
 
 interface IProps {
   children?: ReactNode
@@ -179,6 +180,7 @@ const SmsA: FC<IProps> = memo(() => {
           )}
         </div>
       </div>
+      <VerifyHistory />
     </div>
   )
 })

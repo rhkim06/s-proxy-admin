@@ -1,4 +1,4 @@
-import { getPhoneNumber, getPlatformPriceByCountry, getVerifyCode } from '@/service/sms-a'
+import { getPhoneNumber, getPlatformPriceByCountry, getVefiryHistory, getVerifyCode } from '@/service/sms-a'
 import { Country } from '@/types/ip'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
@@ -15,12 +15,14 @@ type InitialState = {
   requestId: number
   phoneNumber: any
   verifyRes: any
+  verifyHistory: any[]
 }
 const initialState: InitialState = {
   platformPrices: [],
   requestId: 0,
   phoneNumber: {},
-  verifyRes: {}
+  verifyRes: {},
+  verifyHistory: []
 }
 
 export const fetchPlatformPrice = createAsyncThunk('platformprice', async (country: Country) => {
@@ -37,7 +39,10 @@ export const fetchVerifyCode = createAsyncThunk('verifycode', async (requestId: 
   const { data } = await getVerifyCode(requestId)
   return data
 })
-
+export const fetchVerifyHistory = createAsyncThunk('vefiryHistory', async (userId: number) => {
+  const { data } = await getVefiryHistory(userId)
+  return data
+})
 const smsASlice = createSlice({
   name: 'smsA',
   initialState,
@@ -55,6 +60,9 @@ const smsASlice = createSlice({
       })
       .addCase(fetchVerifyCode.fulfilled, (state, action: PayloadAction<any>) => {
         state.verifyRes = action.payload
+      })
+      .addCase(fetchVerifyHistory.fulfilled, (state, action: PayloadAction<any>) => {
+        state.verifyHistory = action.payload
       })
   }
 })

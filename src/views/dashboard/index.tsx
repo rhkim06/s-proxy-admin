@@ -15,17 +15,17 @@ interface IProps {
 const Dashboard: FC<IProps> = memo(() => {
   // store
   const dispatch = useAppDispatch()
-  const { id, username } = useAppSelector((state) => {
+  const { userId, username } = useAppSelector((state) => {
     return {
-      id: state.user.user.id,
+      userId: state.user.user.id,
       username: state.user.userProfile.name
     }
   }, shallowEqual)
   // effect
   useEffect(() => {
-    dispatch(fetchStaticIpList({ id }))
-    dispatch(fetchDynamicIpInfo(id))
-    dispatch(fetchUserProfile(id))
+    dispatch(fetchStaticIpList({ userId }))
+    dispatch(fetchDynamicIpInfo(userId))
+    dispatch(fetchUserProfile(userId))
   }, [])
   // router
   const navigate = useNavigate()

@@ -2,7 +2,7 @@ import { Popconfirm } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 
 export type DataType = {
-  sip_id: string
+  sip_id: number
   sip_create_time: string
   sip_protocol: number
   sip_country: string
