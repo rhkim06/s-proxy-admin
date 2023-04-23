@@ -8,6 +8,7 @@ import DynamicIp from '@/views/dashboard/cpn-view/dynamic-ip'
 import StaticIp from '@/views/dashboard/cpn-view/static-ip'
 import SmsA from '@/views/dashboard/cpn-view/sms-a'
 import BadRequest from '@/views/404'
+import MailService from '@/views/dashboard/cpn-view/MailService'
 
 export const routes: RouteObject[] = [
   {
@@ -37,6 +38,10 @@ export const routes: RouteObject[] = [
       {
         path: 'sms-a',
         element: <SmsA />
+      },
+      {
+        path: 'mail-service',
+        element: <MailService />
       }
     ]
   },

@@ -28,6 +28,11 @@ const Sidebar: FC<IProps> = memo(() => {
           验证码
         </NavLink>
       </div>
+      <div className="w-full cursor-pointer text-center ">
+        <NavLink className="block  p-2 hover:bg-indigo-200/70" to="/dashboard/mail-service">
+          邮件服务
+        </NavLink>
+      </div>
     </div>
   )
 })
