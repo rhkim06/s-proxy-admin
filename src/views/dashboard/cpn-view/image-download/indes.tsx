@@ -4,6 +4,7 @@ import { Button, Select } from 'antd'
 import { useAppDispatch, useAppSelector } from '@/hooks/store'
 import { fetchImageDownload } from '@/store/module/image-download'
 import { shallowEqual } from 'react-redux'
+import { fetchName } from '@/store/module/create-profile'
 
 interface IProps {
   children?: ReactNode
@@ -12,14 +13,16 @@ interface IProps {
 const ImageDownload: FC<IProps> = memo(() => {
   // store
   const dispatch = useAppDispatch()
-  const { images } = useAppSelector((state) => {
+  const { images, name } = useAppSelector((state) => {
     return {
-      images: state.imageDownload.images
+      images: state.imageDownload.images,
+      name: state.createProfile.name
     }
   }, shallowEqual)
   // state
   const [imageCount, setImageCount] = useState(5)
   const [loadings, setLoadings] = useState<boolean[]>([])
+  const [nameLoadings, setNameLoadings] = useState<boolean[]>([])
   const options = []
 
   for (let i = 1; i <= 10; i++) {
@@ -49,16 +52,40 @@ const ImageDownload: FC<IProps> = memo(() => {
     a.target = '_blank'
     a.click()
   }
+  const getNameBtnHandler = async (index: number) => {
+    setNameLoadings((prevLoadings) => {
+      const newLoadings = [...prevLoadings]
+      newLoadings[index] = true
+      return newLoadings
+    })
+
+    await dispatch(fetchName())
+
+    setNameLoadings((prevLoadings) => {
+      const newLoadings = [...prevLoadings]
+      newLoadings[index] = false
+      return newLoadings
+    })
+  }
   return (
     <div className="flex flex-col items-center">
-      <div className="show-data-box flex items-center ">
-        <span className="mr-3 text-indigo-900">获取</span>
-        <Select defaultValue={imageCount} style={{ width: 120 }} onChange={optionChangeHandler} options={options} />
-        <span className="ml-3 mr-8 text-indigo-900">个图片</span>
-        <Button className="flex-1" type="primary" loading={loadings[0]} onClick={() => getImageBtnHandler(0)}>
-          立即获取
-        </Button>
+      <div className="flex justify-center">
+        <div className="show-data-box flex items-center ">
+          <span className="mr-3 text-indigo-900">获取</span>
+          <Select defaultValue={imageCount} style={{ width: 120 }} onChange={optionChangeHandler} options={options} />
+          <span className="ml-3 mr-8 text-indigo-900">个图片</span>
+          <Button className="flex-1" type="primary" loading={loadings[0]} onClick={() => getImageBtnHandler(0)}>
+            立即获取
+          </Button>
+        </div>
+        <div className="show-data-box ml-12 flex items-center">
+          <span>{name}</span>
+          <Button className="flex-1" type="primary" loading={nameLoadings[0]} onClick={() => getNameBtnHandler(0)}>
+            获取姓名
+          </Button>
+        </div>
       </div>
+
       <div className="show-data-box mb-12 mt-8 flex w-fit flex-wrap">
         {images.length > 0 &&
           images.map((item, index) => {
