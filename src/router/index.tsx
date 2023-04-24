@@ -10,6 +10,7 @@ import SmsA from '@/views/dashboard/cpn-view/sms-a'
 import BadRequest from '@/views/404'
 import MailService from '@/views/dashboard/cpn-view/MailService'
 import IpCheck from '@/views/dashboard/cpn-view/ip-check'
+import ImageDownload from '@/views/dashboard/cpn-view/image-download/indes'
 
 export const routes: RouteObject[] = [
   {
@@ -47,6 +48,11 @@ export const routes: RouteObject[] = [
       {
         path: 'ip-check',
         element: <IpCheck />
+      },
+
+      {
+        path: 'image-download',
+        element: <ImageDownload />
       }
     ]
   },

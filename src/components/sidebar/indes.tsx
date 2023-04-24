@@ -38,6 +38,11 @@ const Sidebar: FC<IProps> = memo(() => {
           IP 检测
         </NavLink>
       </div>
+      <div className="w-full cursor-pointer text-center ">
+        <NavLink className="block  p-2 hover:bg-indigo-200/70" to="/dashboard/image-download">
+          图片下载
+        </NavLink>
+      </div>
     </div>
   )
 })

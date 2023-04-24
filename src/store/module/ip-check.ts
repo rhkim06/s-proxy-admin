@@ -1,6 +1,5 @@
 import { ipCheck } from '@/service/ip-check'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { act } from 'react-dom/test-utils'
 
 type InitialState = {
   ip: string
