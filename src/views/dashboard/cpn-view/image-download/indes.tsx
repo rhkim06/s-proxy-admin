@@ -54,7 +54,7 @@ const ImageDownload: FC<IProps> = memo(() => {
         <span className="mr-3 text-indigo-900">获取</span>
         <Select defaultValue={imageCount} style={{ width: 120 }} onChange={optionChangeHandler} options={options} />
         <span className="ml-3 mr-8 text-indigo-900">个图片</span>
-        <Button type="primary" loading={loadings[0]} onClick={() => getImageBtnHandler(0)}>
+        <Button className="flex-1" type="primary" loading={loadings[0]} onClick={() => getImageBtnHandler(0)}>
           立即获取
         </Button>
       </div>
