@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authSlice from './module/auth'
 import dynamicIpSlice from './module/dynamicIp'
+import imageDownloadSlice from './module/image-download'
 import ipCheckSlice from './module/ip-check'
 import mailServerSlice from './module/mail-server'
 import smsASlice from './module/sms-a'
@@ -16,7 +17,8 @@ const store = configureStore({
     [dynamicIpSlice.name]: dynamicIpSlice.reducer,
     [smsASlice.name]: smsASlice.reducer,
     [mailServerSlice.name]: mailServerSlice.reducer,
-    [ipCheckSlice.name]: ipCheckSlice.reducer
+    [ipCheckSlice.name]: ipCheckSlice.reducer,
+    [imageDownloadSlice.name]: imageDownloadSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

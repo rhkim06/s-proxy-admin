@@ -3,6 +3,7 @@ import type { FC, ReactNode } from 'react'
 import { Button, Input } from 'antd'
 import { useAppDispatch, useAppSelector } from '@/hooks/store'
 import { fetchIpCheck } from '@/store/module/ip-check'
+import { shallowEqual } from 'react-redux'
 
 interface IProps {
   children?: ReactNode
@@ -15,7 +16,7 @@ const IpCheck: FC<IProps> = memo(() => {
     return {
       ipCheck: state.ipCheck
     }
-  })
+  }, shallowEqual)
   const result = Object.entries(ipCheck)
 
   // states
