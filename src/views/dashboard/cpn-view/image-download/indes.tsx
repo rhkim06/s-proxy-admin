@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/store'
 import { fetchImageDownload } from '@/store/module/image-download'
 import { shallowEqual } from 'react-redux'
 import { fetchName } from '@/store/module/create-profile'
+import Paragraph from 'antd/es/typography/Paragraph'
 
 interface IProps {
   children?: ReactNode
@@ -20,7 +21,7 @@ const ImageDownload: FC<IProps> = memo(() => {
     }
   }, shallowEqual)
   // state
-  const [imageCount, setImageCount] = useState(5)
+  const [imageCount, setImageCount] = useState(1)
   const [loadings, setLoadings] = useState<boolean[]>([])
   const [nameLoadings, setNameLoadings] = useState<boolean[]>([])
   const options = []
@@ -71,15 +72,17 @@ const ImageDownload: FC<IProps> = memo(() => {
     <div className="flex flex-col items-center">
       <div className="flex justify-center">
         <div className="show-data-box flex items-center ">
-          <span className="mr-3 text-indigo-900">获取</span>
+          {/*<span className="mr-3 text-indigo-900">获取</span>
           <Select defaultValue={imageCount} style={{ width: 120 }} onChange={optionChangeHandler} options={options} />
-          <span className="ml-3 mr-8 text-indigo-900">个图片</span>
+  <span className="ml-3 mr-8 text-indigo-900">个图片</span>*/}
           <Button className="flex-1" type="primary" loading={loadings[0]} onClick={() => getImageBtnHandler(0)}>
-            立即获取
+            获取图片
           </Button>
         </div>
         <div className="show-data-box ml-12 flex items-center">
-          <span>{name}</span>
+          <Paragraph copyable className="!mb-0 mr-4">
+            {name}
+          </Paragraph>
           <Button className="flex-1" type="primary" loading={nameLoadings[0]} onClick={() => getNameBtnHandler(0)}>
             获取姓名
           </Button>
@@ -95,7 +98,7 @@ const ImageDownload: FC<IProps> = memo(() => {
                 key={index}
                 className="relative mb-4 ml-4 cursor-pointer overflow-hidden rounded-md hover:shadow-md hover:shadow-stone-600"
               >
-                <img className="block" width={200} src={item} />
+                <img className="block" width={400} src={item} />
               </div>
             )
           })}
