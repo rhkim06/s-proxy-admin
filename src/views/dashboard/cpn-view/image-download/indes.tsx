@@ -3,6 +3,7 @@ import type { FC, ReactNode } from 'react'
 import { Button, Select } from 'antd'
 import { useAppDispatch, useAppSelector } from '@/hooks/store'
 import { fetchImageDownload } from '@/store/module/image-download'
+import { shallowEqual } from 'react-redux'
 
 interface IProps {
   children?: ReactNode
@@ -15,7 +16,7 @@ const ImageDownload: FC<IProps> = memo(() => {
     return {
       images: state.imageDownload.images
     }
-  })
+  }, shallowEqual)
   // state
   const [imageCount, setImageCount] = useState(5)
   const [loadings, setLoadings] = useState<boolean[]>([])
