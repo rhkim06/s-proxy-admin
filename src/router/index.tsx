@@ -9,6 +9,7 @@ import StaticIp from '@/views/dashboard/cpn-view/static-ip'
 import SmsA from '@/views/dashboard/cpn-view/sms-a'
 import BadRequest from '@/views/404'
 import MailService from '@/views/dashboard/cpn-view/MailService'
+import IpCheck from '@/views/dashboard/cpn-view/ip-check'
 
 export const routes: RouteObject[] = [
   {
@@ -42,6 +43,10 @@ export const routes: RouteObject[] = [
       {
         path: 'mail-service',
         element: <MailService />
+      },
+      {
+        path: 'ip-check',
+        element: <IpCheck />
       }
     ]
   },
