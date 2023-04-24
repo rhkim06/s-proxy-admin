@@ -7,6 +7,7 @@ import { addMailServerData, getUnreadMail } from '@/service/main-service'
 import { checkEmailType } from '@/utils/mail-service'
 import { useAppDispatch, useAppSelector } from '@/hooks/store'
 import { fetchMailServer } from '@/store/module/mail-server'
+import { shallowEqual } from 'react-redux'
 interface IProps {
   children?: ReactNode
 }
@@ -18,7 +19,7 @@ const MailService: FC<IProps> = memo(() => {
       userId: state.user.user.id,
       mailServer: state.mailServer.mailServer
     }
-  })
+  }, shallowEqual)
   const dispatch = useAppDispatch()
   // state
   const [loadings, setLoadings] = useState<boolean[]>([])
