@@ -16,7 +16,9 @@ const ImageDownload: FC<IProps> = memo(() => {
       images: state.imageDownload.images
     }
   })
+  // state
   const [imageCount, setImageCount] = useState(5)
+  const [loadings, setLoadings] = useState<boolean[]>([])
   const options = []
 
   for (let i = 1; i <= 10; i++) {
@@ -26,8 +28,19 @@ const ImageDownload: FC<IProps> = memo(() => {
   const optionChangeHandler = (value: number) => {
     setImageCount(value)
   }
-  const getImageBtnHandler = () => {
-    dispatch(fetchImageDownload(imageCount))
+  const getImageBtnHandler = async (index: number) => {
+    setLoadings((prevLoadings) => {
+      const newLoadings = [...prevLoadings]
+      newLoadings[index] = true
+      return newLoadings
+    })
+    await dispatch(fetchImageDownload(imageCount))
+
+    setLoadings((prevLoadings) => {
+      const newLoadings = [...prevLoadings]
+      newLoadings[index] = false
+      return newLoadings
+    })
   }
   const imageClickHandler = (url: string) => {
     const a = document.createElement('a')
@@ -41,7 +54,7 @@ const ImageDownload: FC<IProps> = memo(() => {
         <span className="mr-3 text-indigo-900">获取</span>
         <Select defaultValue={imageCount} style={{ width: 120 }} onChange={optionChangeHandler} options={options} />
         <span className="ml-3 mr-8 text-indigo-900">个图片</span>
-        <Button className="flex-1" onClick={getImageBtnHandler}>
+        <Button type="primary" loading={loadings[0]} onClick={() => getImageBtnHandler(0)}>
           立即获取
         </Button>
       </div>
