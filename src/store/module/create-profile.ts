@@ -3,8 +3,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export const fetchName = createAsyncThunk('name', async () => {
   const { data } = await getName()
-  console.log(data)
-
   return data.data.name
 })
 const initialState = {

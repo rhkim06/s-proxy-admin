@@ -6,7 +6,6 @@ import { buttonBasic } from '@/components/common/button'
 import { getAuth, login } from '@/service/auth'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/hooks/store'
-import { updateUser } from '@/store/module/user'
 import { checkAuth } from '@/hooks/useAuth'
 import { updateToken } from '@/store/module/auth'
 import { Alert, Button, Input } from 'antd'
@@ -39,8 +38,6 @@ const Login: FC<IProps> = memo(() => {
       setWrongId(true)
     }
   }
-  // store
-  const dispatch = useAppDispatch()
   // navigate
   const navigate = useNavigate()
 
@@ -55,7 +52,6 @@ const Login: FC<IProps> = memo(() => {
     try {
       const { data } = await login({ id, password })
       if (data && data.codeStatus === 200) {
-        dispatch(updateUser(data.data))
         navigate('/dashboard')
       } else {
         setWrongId(true)

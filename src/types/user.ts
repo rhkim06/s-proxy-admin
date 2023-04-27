@@ -1,12 +1,11 @@
 export type User = {
   id: number
-}
-
-export type UserProfile = {
   name: string
+  roles: string[]
 }
 
 export type TokenVerified = {
+  codeStatus: number
   data: any
   message: string
 }

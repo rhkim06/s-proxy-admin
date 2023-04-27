@@ -1,5 +1,5 @@
 import appRequest from '@/request'
 
-export const getUserProfile = (id: number) => {
+export const getUser = (id: number) => {
   return appRequest.get(`/users/${id}`)
 }

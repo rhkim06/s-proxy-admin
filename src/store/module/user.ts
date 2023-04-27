@@ -1,39 +1,41 @@
-import { getUserProfile } from '@/service/user'
-import { User, UserProfile } from '@/types/user'
+import { getUser } from '@/service/user'
+import { Roles } from '@/types/roles'
+import { User } from '@/types/user'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type InitialState = {
   user: User
-  userProfile: UserProfile
 }
 const initialState: InitialState = {
   user: {
-    id: 0
-  },
-  userProfile: {
-    name: ''
+    id: 0,
+    name: '',
+    roles: []
   }
 }
 
-export const fetchUserProfile = createAsyncThunk('userProfile', async (id: number) => {
-  const { data } = await getUserProfile(id)
+export const fetchUser = createAsyncThunk('user', async (id: number) => {
+  console.log(id)
+
+  const { data } = await getUser(id)
   return data
 })
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    updateUser(state, action: PayloadAction<User>) {
-      state.user = action.payload
+    updateRoles(state, action: PayloadAction<Roles>) {
+      state.user.roles = action.payload.roles
+      state.user.id = action.payload.id
     }
   },
 
   extraReducers: (builder) => {
-    builder.addCase(fetchUserProfile.fulfilled, (state, action: PayloadAction<UserProfile>) => {
-      state.userProfile = action.payload
+    builder.addCase(fetchUser.fulfilled, (state, action: PayloadAction<User>) => {
+      state.user.name = action.payload.name
     })
   }
 })
 
-export const { updateUser } = userSlice.actions
+export const { updateRoles } = userSlice.actions
 export default userSlice

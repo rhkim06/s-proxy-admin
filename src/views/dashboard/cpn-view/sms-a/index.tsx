@@ -57,7 +57,7 @@ const SmsA: FC<IProps> = memo(() => {
       setCode(code)
       createSmsA({ ...verifyRes, userId, number: phoneNumber.number, code })
         .then((res) => {
-          console.log(res)
+          return res
         })
         .catch((err) => {
           console.log(`create sms-a-price result${err}`)

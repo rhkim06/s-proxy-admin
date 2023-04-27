@@ -7,10 +7,11 @@ import ProtectedRoute from './protected-route'
 import DynamicIp from '@/views/dashboard/cpn-view/dynamic-ip'
 import StaticIp from '@/views/dashboard/cpn-view/static-ip'
 import SmsA from '@/views/dashboard/cpn-view/sms-a'
-import BadRequest from '@/views/404'
+import BadRequest from '@/views/error/404'
 import MailService from '@/views/dashboard/cpn-view/MailService'
 import IpCheck from '@/views/dashboard/cpn-view/ip-check'
 import ImageDownload from '@/views/dashboard/cpn-view/image-download/indes'
+import AdminRoute from './admin-route'
 
 export const routes: RouteObject[] = [
   {
@@ -27,23 +28,39 @@ export const routes: RouteObject[] = [
     children: [
       {
         path: '',
-        element: <Navigate to="dynamic-ip" />
+        element: <Navigate to="ip-check" />
       },
       {
         path: 'dynamic-ip',
-        element: <DynamicIp />
+        element: (
+          <AdminRoute>
+            <DynamicIp />
+          </AdminRoute>
+        )
       },
       {
         path: 'static-ip',
-        element: <StaticIp />
+        element: (
+          <AdminRoute>
+            <StaticIp />
+          </AdminRoute>
+        )
       },
       {
         path: 'sms-a',
-        element: <SmsA />
+        element: (
+          <AdminRoute>
+            <SmsA />
+          </AdminRoute>
+        )
       },
       {
         path: 'mail-service',
-        element: <MailService />
+        element: (
+          <AdminRoute>
+            <MailService />
+          </AdminRoute>
+        )
       },
       {
         path: 'ip-check',
@@ -52,7 +69,11 @@ export const routes: RouteObject[] = [
 
       {
         path: 'image-download',
-        element: <ImageDownload />
+        element: (
+          <AdminRoute>
+            <ImageDownload />
+          </AdminRoute>
+        )
       }
     ]
   },

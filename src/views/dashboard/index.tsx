@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/store'
 import { fetchStaticIpList } from '@/store/module/staticIp'
 import { fetchDynamicIpInfo } from '@/store/module/dynamicIp'
 import { shallowEqual } from 'react-redux'
-import { fetchUserProfile } from '@/store/module/user'
+import { fetchUser } from '@/store/module/user'
 
 interface IProps {
   children?: ReactNode
@@ -18,15 +18,15 @@ const Dashboard: FC<IProps> = memo(() => {
   const { userId, username } = useAppSelector((state) => {
     return {
       userId: state.user.user.id,
-      username: state.user.userProfile.name
+      username: state.user.user.name
     }
   }, shallowEqual)
   // effect
   useEffect(() => {
     dispatch(fetchStaticIpList({ userId }))
     dispatch(fetchDynamicIpInfo(userId))
-    dispatch(fetchUserProfile(userId))
-  }, [])
+    dispatch(fetchUser(userId))
+  }, [userId])
   // router
   const navigate = useNavigate()
   // handers
