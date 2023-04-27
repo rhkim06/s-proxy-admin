@@ -69,6 +69,11 @@ const Login: FC<IProps> = memo(() => {
       }
     } catch (error) {
       setWrongId(true)
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings]
+        newLoadings[index] = false
+        return newLoadings
+      })
     }
   }
 
