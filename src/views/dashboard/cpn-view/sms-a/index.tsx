@@ -59,9 +59,7 @@ const SmsA: FC<IProps> = memo(() => {
         .then((res) => {
           return res
         })
-        .catch((err) => {
-          console.log(`create sms-a-price result${err}`)
-        })
+        .catch((err) => {})
     } else if (verifyRes.error_msg) {
       setCode('暂未收到验证码，请重新确认验证码。')
     } else {

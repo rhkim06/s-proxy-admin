@@ -29,9 +29,7 @@ request9002.interceptors.response.use(
     }
     return res
   },
-  (err) => {
-    console.log(err)
-  }
+  (err) => {}
 )
 // const request8000 = new AppRequest({
 //   baseURL: BASE_URL1,

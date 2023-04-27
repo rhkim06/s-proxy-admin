@@ -15,8 +15,6 @@ const initialState: InitialState = {
 }
 
 export const fetchUser = createAsyncThunk('user', async (id: number) => {
-  console.log(id)
-
   const { data } = await getUser(id)
   return data
 })
