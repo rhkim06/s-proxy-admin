@@ -18,10 +18,10 @@ interface IProps {
 
 const Login: FC<IProps> = memo(() => {
   // state
-  const [isAuth, setIsAuth] = useState(false)
   const [wrongId, setWrongId] = useState(false)
   const [password, setPassword] = useState('')
   const [id, setId] = useState('')
+  const [loadings, setLoadings] = useState<boolean[]>([])
   // effect
   useEffect(() => {
     getAuth().then((res) => {
@@ -33,7 +33,7 @@ const Login: FC<IProps> = memo(() => {
   //document event
   document.onkeyup = (event: KeyboardEvent) => {
     if (event.code === 'Enter' && id !== '' && password !== '') {
-      signInHandler()
+      signInHandler(0)
     } else if (event.code === 'Enter' && (id === '' || password === '')) {
       setWrongId(true)
     }
@@ -48,9 +48,20 @@ const Login: FC<IProps> = memo(() => {
   const idChangeHandler = (e: any) => {
     setId(e.target.value)
   }
-  const signInHandler = async () => {
+  const signInHandler = async (index: number) => {
     try {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings]
+        newLoadings[index] = true
+        return newLoadings
+      })
       const { data } = await login({ id, password })
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings]
+        newLoadings[index] = false
+        return newLoadings
+      })
+
       if (data && data.codeStatus === 200) {
         navigate('/dashboard')
       } else {
@@ -83,7 +94,14 @@ const Login: FC<IProps> = memo(() => {
             />
           </div>
           <div className="mt-8">
-            <Button type="primary" size="large" block onClick={signInHandler}>
+            <Button
+              className="mt-4"
+              type="primary"
+              size="large"
+              block
+              loading={loadings[0]}
+              onClick={() => signInHandler(0)}
+            >
               登陆
             </Button>
           </div>
