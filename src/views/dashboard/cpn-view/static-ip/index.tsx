@@ -28,7 +28,6 @@ const StaticIp: FC<IProps> = memo(() => {
   const [staticCountry, setCountryOption] = useState<Country>('us')
   const [staticPerCost, setStaticPerCost] = useState(0.8)
   const [staticProtocol, setStaticProtocol] = useState('socks5')
-  const [buyStatus, setBuyStatus] = useState(false)
 
   // useEffect
   useEffect(() => {
@@ -234,7 +233,7 @@ const StaticIp: FC<IProps> = memo(() => {
 
       <h2 className="mb-0 mt-20 rounded-t bg-white px-6 py-3 text-lg">静态住宅IP订单列表</h2>
       <div className="show-data-box">
-        <Table columns={columns} dataSource={rows} bordered />
+        <Table columns={columns} dataSource={rows} bordered rowKey={(record) => record.sip_id} />
       </div>
       {contextHolder}
     </div>

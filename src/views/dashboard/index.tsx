@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/store'
 import { fetchStaticIpList } from '@/store/module/staticIp'
 import { fetchDynamicIpInfo } from '@/store/module/dynamicIp'
 import { shallowEqual } from 'react-redux'
-import { fetchUser } from '@/store/module/user'
+import { fetchUser, updateRoles } from '@/store/module/user'
 
 interface IProps {
   children?: ReactNode
@@ -15,16 +15,17 @@ interface IProps {
 const Dashboard: FC<IProps> = memo(() => {
   // store
   const dispatch = useAppDispatch()
-  const { userId, username } = useAppSelector((state) => {
+  const { roles, userId, username } = useAppSelector((state) => {
     return {
+      roles: state.user.user.roles,
       userId: state.user.user.id,
       username: state.user.user.name
     }
   }, shallowEqual)
   // effect
   useEffect(() => {
-    dispatch(fetchStaticIpList({ userId }))
-    dispatch(fetchDynamicIpInfo(userId))
+    roles.includes('admin') && dispatch(fetchStaticIpList({ userId }))
+    roles.includes('admin') && dispatch(fetchDynamicIpInfo(userId))
     dispatch(fetchUser(userId))
   }, [userId])
   // router
@@ -32,6 +33,7 @@ const Dashboard: FC<IProps> = memo(() => {
   // handers
   const signOutHandler = () => {
     localStorage.setItem('access_token', '')
+    dispatch(updateRoles({ id: 0, roles: [] }))
     navigate('/login')
   }
   return (

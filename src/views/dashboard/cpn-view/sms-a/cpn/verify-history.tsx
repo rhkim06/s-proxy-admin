@@ -59,7 +59,7 @@ const VerifyHistory: FC<IProps> = memo(() => {
     <div>
       <h2 className="mt-12 font-mono text-xl text-stone-900/60">获取历史</h2>
       <div className="show-data-box !w-full">
-        <Table columns={columns} dataSource={verifyHistory} />
+        <Table columns={columns} dataSource={verifyHistory} rowKey={(record) => record.create_time} />
       </div>
     </div>
   )

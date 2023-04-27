@@ -55,9 +55,9 @@ const IpCheck: FC<IProps> = memo(() => {
         检测结果
       </h2>
       <div className="mt-4 flex">
-        {result.map((item) => {
+        {result.map((item, index) => {
           return (
-            <div className="mr-4 rounded-md border border-indigo-900 p-3 shadow-xl shadow-indigo-900/30">
+            <div key={index} className="mr-4 rounded-md border border-indigo-900 p-3 shadow-xl shadow-indigo-900/30">
               <span className="" key={item[0]}>
                 {item[0]}:
               </span>

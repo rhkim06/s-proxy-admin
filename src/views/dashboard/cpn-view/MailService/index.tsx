@@ -8,6 +8,8 @@ import { checkEmailType } from '@/utils/mail-service'
 import { useAppDispatch, useAppSelector } from '@/hooks/store'
 import { fetchMailServer } from '@/store/module/mail-server'
 import { shallowEqual } from 'react-redux'
+import { DataType } from './table-data'
+import { ColumnsType } from 'antd/es/table'
 interface IProps {
   children?: ReactNode
 }
@@ -90,7 +92,7 @@ const MailService: FC<IProps> = memo(() => {
   const emailAddressChangeHandler = (e: any) => {
     setEmailAddress(e.target.value)
   }
-  const columns = [
+  const columns: ColumnsType<DataType> = [
     {
       title: '创建时间',
       dataIndex: 'mailServer_create_time',
@@ -150,7 +152,7 @@ const MailService: FC<IProps> = memo(() => {
       </div>
 
       <div className="show-data-box mt-12">
-        <Table dataSource={mailServer} columns={columns} />
+        <Table dataSource={mailServer} columns={columns} rowKey={(record) => record.mailServer_create_time} />
       </div>
     </div>
   )
