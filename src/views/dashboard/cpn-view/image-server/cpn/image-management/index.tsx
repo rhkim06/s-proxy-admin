@@ -8,6 +8,7 @@ import { ImageListRecord } from '@/types/image-server'
 import { deleteImageList } from '@/service/image-server'
 import { Id } from '@reduxjs/toolkit/dist/tsHelpers'
 import Delete from '@/components/common/button/delete-confirm'
+import { rejects } from 'assert'
 
 interface IProps {
   children?: ReactNode
@@ -86,13 +87,13 @@ const ImageManagement: FC<IProps> = memo(() => {
     })
   }
   const deleteImagetManyHandler = async (index: number) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       if (deleteImageArrList.length <= 0) {
         messageApi.open({
           type: 'warning',
           content: '请先选择要删除的图片！'
         })
-        return
+        reject()
       }
       setDeleteManyloadings((prevLoadings) => {
         const newLoadings = [...prevLoadings]
@@ -114,7 +115,7 @@ const ImageManagement: FC<IProps> = memo(() => {
         dispatchImages(currentPage)
       })
       .catch(() => {
-        dispatchImages(currentPage)
+        return
       })
   }
   const dispatchImages = async (page: number) => {
