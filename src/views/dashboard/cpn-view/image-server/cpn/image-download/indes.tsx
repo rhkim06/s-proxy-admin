@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Button, Select } from 'antd'
 import { useAppDispatch, useAppSelector } from '@/hooks/store'
-import { fetchImageDownload } from '@/store/module/image-download'
+import { fetchImageDownload } from '@/store/module/image-server'
 import { shallowEqual } from 'react-redux'
 import { fetchName } from '@/store/module/create-profile'
 import Paragraph from 'antd/es/typography/Paragraph'
@@ -14,9 +14,10 @@ interface IProps {
 const ImageDownload: FC<IProps> = memo(() => {
   // store
   const dispatch = useAppDispatch()
-  const { images, name } = useAppSelector((state) => {
+
+  const { imagesForDown, name } = useAppSelector((state) => {
     return {
-      images: state.imageDownload.images,
+      imagesForDown: state.imageServer.imagesForDown,
       name: state.createProfile.name
     }
   }, shallowEqual)
@@ -59,9 +60,7 @@ const ImageDownload: FC<IProps> = memo(() => {
       newLoadings[index] = true
       return newLoadings
     })
-
     await dispatch(fetchName())
-
     setNameLoadings((prevLoadings) => {
       const newLoadings = [...prevLoadings]
       newLoadings[index] = false
@@ -90,19 +89,15 @@ const ImageDownload: FC<IProps> = memo(() => {
       </div>
 
       <div className="show-data-box mb-12 mt-8 flex w-fit flex-wrap">
-        {images.length > 0 &&
-          images.map((item, index) => {
+        {imagesForDown.length > 0 &&
+          imagesForDown.map((item, index) => {
             return (
-              <div
-                onClick={(e) => imageClickHandler(item)}
-                key={index}
-                className="relative mb-4 ml-4 cursor-pointer overflow-hidden rounded-md hover:shadow-md hover:shadow-stone-600"
-              >
-                <img className="block" width={400} src={item} />
+              <div onClick={(e) => imageClickHandler(item)} key={index} className="image-list-item">
+                <img className="block" src={item} />
               </div>
             )
           })}
-        {images.length <= 0 && (
+        {imagesForDown.length <= 0 && (
           <p className="text-stone-400">
             <span className="text-orange-500">提示：</span>请点击 &lt;立即获取&gt; 按钮！
           </p>

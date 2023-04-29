@@ -1,5 +1,5 @@
 import AppRequest from './request'
-import { BASE_URL, ROLA_URL, TIMEOUT } from './config'
+import { BASE_URL, TIMEOUT } from './config'
 import axios, { AxiosHeaders, InternalAxiosRequestConfig } from 'axios'
 
 const request9002 = axios.create({

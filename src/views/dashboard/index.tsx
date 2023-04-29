@@ -40,7 +40,7 @@ const Dashboard: FC<IProps> = memo(() => {
     <div className="pl-52">
       <Sidebar />
       <h1 className="mt-6 text-center font-mono text-2xl font-bold text-blue-500">JX-科技</h1>
-      <div className="px-6 pb-32 pt-12 ">
+      <div className="px-6 pb-32 pt-12">
         <Outlet />
       </div>
       <div className="absolute right-6 top-6">

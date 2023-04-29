@@ -10,8 +10,10 @@ import SmsA from '@/views/dashboard/cpn-view/sms-a'
 import BadRequest from '@/views/error/404'
 import MailService from '@/views/dashboard/cpn-view/MailService'
 import IpCheck from '@/views/dashboard/cpn-view/ip-check'
-import ImageDownload from '@/views/dashboard/cpn-view/image-download/indes'
+import ImageDownload from '@/views/dashboard/cpn-view/image-server/cpn/image-download/indes'
 import AdminRoute from './admin-route'
+import ImageServer from '@/views/dashboard/cpn-view/image-server'
+import ImageManagement from '@/views/dashboard/cpn-view/image-server/cpn/image-management'
 
 export const routes: RouteObject[] = [
   {
@@ -68,10 +70,10 @@ export const routes: RouteObject[] = [
       },
 
       {
-        path: 'image-download',
+        path: 'image-server',
         element: (
           <AdminRoute>
-            <ImageDownload />
+            <ImageServer />
           </AdminRoute>
         )
       }

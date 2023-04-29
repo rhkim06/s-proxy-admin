@@ -49,8 +49,8 @@ const Sidebar: FC<IProps> = memo(() => {
             </NavLink>
           </div>
           <div className="w-full cursor-pointer text-center ">
-            <NavLink className="block  p-2 hover:bg-indigo-200/70" to="/dashboard/image-download">
-              图片下载
+            <NavLink className="block  p-2 hover:bg-indigo-200/70" to="/dashboard/image-server">
+              图片服务
             </NavLink>
           </div>
         </>

@@ -1,7 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+img {
+  @apply max-w-full;
+}
 body {
   @apply bg-indigo-500/40;
 }
@@ -48,4 +50,7 @@ input {
 .instagram {
   background: url('~assets/image/icon-instagram.avif') 0 0 no-repeat;
   background-size: 100%;
+}
+.image-list-item {
+  @apply relative mb-4 ml-4 w-48 cursor-pointer overflow-hidden rounded-md hover:shadow-md hover:shadow-stone-600;
 }
