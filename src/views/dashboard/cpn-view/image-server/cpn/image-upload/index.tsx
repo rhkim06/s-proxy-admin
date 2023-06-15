@@ -1,29 +1,21 @@
-import React, {
-  ChangeEvent,
-  DetailedHTMLProps,
-  HTMLAttributes,
-  memo,
-  MutableRefObject,
-  RefObject,
-  useEffect,
-  useRef,
-  useState
-} from 'react'
+import React, { ChangeEvent, memo, useEffect, useRef, useState } from 'react'
 import type { FC, ReactNode } from 'react'
-import { Button, Empty, Input, message, Modal, RefSelectProps, Upload, UploadFile } from 'antd'
-import { RcFile, UploadProps } from 'antd/es/upload'
-import { PlusOutlined } from '@ant-design/icons'
+import { Button, Empty, Input, message } from 'antd'
 import Delete from '@/components/common/button/delete-confirm'
+import { request } from 'https'
+import appRequest from '@/request'
+import axios from 'axios'
 
 interface IProps {
   children?: ReactNode
 }
-
 const ImageUpload: FC<IProps> = memo(() => {
   // refs
   const formRef = useRef<HTMLFormElement>(null)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
   // states
   const [files, setFiles] = useState<Blob[]>([])
+  const [filesForSubmit, setFilesForSubmit] = useState<Blob[]>([])
   const [isFirst, setIsFirst] = useState(true)
   const [imageType, setImageType] = useState('1')
   const [fileListUrl, setFileListUrl] = useState<string[]>([])
@@ -51,7 +43,6 @@ const ImageUpload: FC<IProps> = memo(() => {
     const fileReader = new FileReader()
     if (files.length <= 0) return
     const file = files[0]
-    console.log(files, 'files')
     fileReader.readAsDataURL(file)
     fileReader.onload = function () {
       setFileListUrl([...fileListUrl, getObjectURL(file)])
@@ -63,29 +54,21 @@ const ImageUpload: FC<IProps> = memo(() => {
       read(files)
     }
   }, [files])
+  /*useEffect(() => {
+    const iframeListener = (e: any) => {
+      console.log(2)
+    }
+    iframeRef.current?.addEventListener('load', iframeListener)
+    return () => {
+      iframeRef.current?.removeEventListener('load', iframeListener)
+    }
+  })*/
   // refs
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const fileReader = new FileReader()
     setFiles(Object.entries(e.target.files!).map((item) => item[1]))
+
+    setFilesForSubmit(Object.entries(e.target.files!).map((item) => item[1]))
     setIsFirst(false)
-    // for (let i = 0; i < files.length; i++) {
-    //   const file = files[i]
-    //   fileReader.readAsDataURL(file)
-    //   fileReader.onload = function () {
-    //     setFileListUrl([...fileListUrl, getObjectURL(file)])
-    //   }
-    // }
-    // files.forEach(async (item) => {
-    //   return await new Promise((resolve) => {
-    //     fileReader.readAsDataURL(item)
-    //     fileReader.onload = function () {
-    //       setFileListUrl([...fileListUrl, getObjectURL(item)])
-    //     }
-    //     fileReader.onloadend = function () {
-    //       resolve()
-    //     }
-    //   })
-    // })
   }
 
   function getObjectURL(file: any) {
@@ -103,7 +86,6 @@ const ImageUpload: FC<IProps> = memo(() => {
   const deleteImageOneHandler = async (url: string) => {
     setFileListUrl([...fileListUrl.filter((item) => item !== url)])
   }
-
   const formSubmitClickHandler = (index: number) => {
     if (!/^[0-9]*$/.test(imageType) || imageType === '0') {
       messageApi.open({
@@ -124,15 +106,10 @@ const ImageUpload: FC<IProps> = memo(() => {
       newLoadings[index] = true
       return newLoadings
     })
-    return new Promise((resolve) => {
-      formRef.current?.submit()
-      resolve('')
-    }).then((res) => {
-      setLoadings((prevLoadings) => {
-        const newLoadings = [...prevLoadings]
-        newLoadings[index] = false
-        return newLoadings
-      })
+    setLoadings((prevLoadings) => {
+      const newLoadings = [...prevLoadings]
+      newLoadings[index] = false
+      return newLoadings
     })
   }
   const formResetClickHandler = () => {
@@ -141,24 +118,40 @@ const ImageUpload: FC<IProps> = memo(() => {
     setIsFirst(true)
     formRef.current?.reset()
   }
+  const submitFormHandler = async () => {
+    const data = new FormData(formRef.current!)
+    filesForSubmit.forEach((item, index) => {
+      data.append('file', item)
+    })
+
+    const res = await axios.request({
+      method: 'POST',
+      // headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      // headers: { 'content-type': 'multipart/form-data' },
+      data,
+      url: 'http://45.76.231.188:4001/image-server/upload'
+    })
+    console.log(data.get('file'))
+  }
   return (
     <div>
       {contextHolder}
       <form
         ref={formRef}
+        // action="http://45.76.231.188:4001/image-server/upload"
         action="http://45.92.158.200:8084/image/mutiUpload"
         method="post"
         encType="multipart/form-data"
         target="frameName"
+        onSubmit={(e) => formSubmitClickHandler(0)}
       >
-        {/* <Upload {...props}>{fileList.length >= 8 ? null : uploadButton}</Upload> */}
         <div className="">
           <span>以选择 {fileListUrl.length} 个图片</span>
           <label className="ml-4 inline-block cursor-pointer rounded-md bg-indigo-500 px-4 py-2 shadow-md hover:text-white hover:shadow-indigo-950">
             选择图片
             <input
               className="hidden"
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
               type="file"
               name="multipartFile"
               accept="image/*"
@@ -173,12 +166,14 @@ const ImageUpload: FC<IProps> = memo(() => {
             type="text"
             name="projectType"
           />
-
-          <Button className="ml-4" loading={loadings[0]} onClick={() => formSubmitClickHandler(0)}>
+          <Button htmlType="submit" className="ml-4" loading={loadings[0]}>
             提交
           </Button>
           <Button className="ml-4" onClick={formResetClickHandler}>
             清空
+          </Button>
+          <Button className="ml-4" loading={loadings[0]} onClick={submitFormHandler}>
+            另一个提交
           </Button>
         </div>
       </form>
@@ -201,7 +196,7 @@ const ImageUpload: FC<IProps> = memo(() => {
           <Empty />
         )}
       </div>
-      <iframe className="hidden" name="frameName"></iframe>
+      <iframe ref={iframeRef} width="500" height="500" className="" name="frameName"></iframe>
     </div>
   )
 })
